@@ -14,6 +14,8 @@ export const CATEGORIES = [
     new Category('c10', 'Summer', '#47fced')
 ];
 
+// Not working don't know why
+
 // export const MEALS = [
 //     new Meal(
 //       'm1',
