@@ -1,18 +1,16 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
-import { CATEGORIES, MEALS } from '../data/dummy-data';
+import { CATEGORIES } from '../data/dummy-data';
 import MealItem from '../components/MealItem';
 import Colors from '../constants/Colors';
+import { useSelector } from 'react-redux';
 
 const CategoryItemDetailScreen = props => {
-    // const { categoryId } = props.navigation.params;
     const catId = props.route.params.categoryId;
-    // const catId = categoryId;
+    const meals = useSelector(state => state.meals.meals);
 
-    // const selectedCategory = CATEGORIES.find(cat => cat.id === catId);
-
-    const displayedMeals = MEALS.filter(meal => meal.categoryIds.indexOf(catId) >= 0); 
+    const displayedMeals = meals.filter(meal => meal.categoryIds.indexOf(catId) >= 0); 
 
     const renderMealItem = itemData => {
         return(
@@ -25,11 +23,7 @@ const CategoryItemDetailScreen = props => {
 
     return (
         <View style={styles.screen}>
-            {/* <Text>{catId}</Text> */}
-            {/* <Text>{selectedCategory.name}</Text> */}
-            {/* <Text>{displayedMeals[0].title}</Text> */}
             <FlatList data={displayedMeals} renderItem={renderMealItem} style={{width: '90%'}} />
-            
          </View>
     );
 }

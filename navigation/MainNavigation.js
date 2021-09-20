@@ -4,8 +4,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
+import * as authActions from '../store/actions/authActions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoginScreen from '../screen/LoginScreen';
 import RegistrationScreen from '../screen/RegistrationScreen';
@@ -16,33 +18,40 @@ import CategoryItemDetailScreen from '../screen/CategoryItemDetailScreen';
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const DrawerWithLogoutButton = props => (
-    <DrawerContentScrollView {...props} contentContainerStyle={styles.scroll}>
-        <View style={styles.container}>
-            <Image style={styles.image} source={{uri: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'}} />
-            <View style={styles.infoContainer}>
-                <Text style={styles.title}>Debadrita Bandyopadhyay</Text>
+const DrawerWithLogoutButton = props => {
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
+    
+    return (
+        <DrawerContentScrollView {...props} contentContainerStyle={styles.scroll}>
+            <View style={styles.container}>
+                <Image style={styles.image} source={{uri: user.profile_picture }} />
+                <View style={styles.infoContainer}>
+                    <Text style={styles.title}>{user.first_name}</Text>
+                </View>
             </View>
-        </View>
 
-        <DrawerItemList {...props} />
+            <DrawerItemList {...props} />
 
-        <View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => props.navigation.navigate('Auth')}>
-                    <Ionicons 
-                        name='md-log-out-outline'
-                        size={23}
-                        color='white'
-                        style={{ paddingRight: 20 }}
-                    />
-                    <Text style={styles.buttonText}>Logout</Text>
-                </TouchableOpacity>
+            <View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={() => {
+                        dispatch(authActions.logout())
+                        props.navigation.navigate('Auth')
+                        }}>
+                        <Ionicons 
+                            name='md-log-out-outline'
+                            size={23}
+                            color='white'
+                            style={{ paddingRight: 20 }}
+                        />
+                        <Text style={styles.buttonText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
-    </DrawerContentScrollView>
-);
-
+        </DrawerContentScrollView>
+    );
+}
 
 const AuthNavigation = () => {
     return(
@@ -140,17 +149,19 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         backgroundColor: '#ccc',
         borderColor: Colors.primary,
-        borderWidth: 1
+        borderWidth: 1,
+        marginBottom: 5
     },
     infoContainer: {
         padding: 10,
-        marginLeft: 25,
-        width: 250
+        width: 250,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     title: {
         color: 'white',
         fontSize: 18,
-        marginBottom: 5
+        marginBottom: 5,
     },
     buttonContainer: {
         justifyContent: 'center',

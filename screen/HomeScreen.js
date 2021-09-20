@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SearchBar } from 'react-native-elements';
+import { useSelector } from 'react-redux';
 
-import { CATEGORIES } from '../data/dummy-data';
 import CategoryGridTile from '../components/CategoryGridTile';
 import CustomHeaderButton from '../components/CustomHeaderButton';
 import Colors from '../constants/Colors';
@@ -26,7 +26,7 @@ const HomeScreen = (props) => {
                 </HeaderButtons>
             )
         })
-    }, [])
+    }, [navigation])
 
     const openSearchbarHandler = () => {
         setOpenSearchbar(true);
@@ -60,9 +60,11 @@ const HomeScreen = (props) => {
         })
     }
 
-    const filteredCategories = CATEGORIES.filter(cat =>
+    const categories = useSelector(state => state.categories.categories);
+    const filteredCategories = categories.filter(cat =>
         cat.name.toLowerCase().includes(input.toLowerCase())
     );
+
   
     return (
         <React.Fragment>

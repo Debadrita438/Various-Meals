@@ -1,71 +1,103 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useReducer, useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import CountryPicker from 'react-native-country-picker-modal';
 
 import CustomButton from '../components/CustomButton';
 import Input from '../components/Input';
 import Colors from '../constants/Colors';
+import * as authActions from '../store/actions/authActions';
+
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
+
+const formReducer = (state, action) => {
+    switch(action.type) {
+        case FORM_INPUT_UPDATE:
+            const updatedValues = {
+                ...state.inputValues,
+                [action.input]: action.payload
+            }
+            const updatedValidities = {
+                ...state.inputValidities,
+                [action.input]: action.isValid
+            }
+            let updatedFormIsValid = true;
+            for(const key in updatedValidities) {
+                updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+            }
+            return {
+                inputValues: updatedValues,
+                inputValidities: updatedValidities,
+                isFormValid: updatedFormIsValid
+            }
+        default: 
+            return state;
+    }
+}
 
 const LoginScreen = props => {
     const [isLoading, setIsLoading] = useState();
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [error, setError] = useState();
+    const [countryCode, setCountryCode] = useState('IN');
+    const [callingCode, setCallingCode] = useState(['+91']);
+    const dispatch = useDispatch();
 
-    const phoneHandler = text => {
-        setPhone(text);
-    }
+    const [formState, dispatchFormState] = useReducer(formReducer, {
+        inputValues: {
+            phone: '',
+            password: ''
 
-    const passwordHandler = text => {
-        setPassword(text);
-    }
+        },
+        inputValidities: {
+            phone: false,
+            password: false
+        },
+        isFormValid: false
+    });
 
-    const loginHandler = () => {
+    const loginHandler = async () => {
+        const action = authActions.login(
+            formState.inputValues.phone, 
+            formState.inputValues.password,
+            callingCode
+        );
+
         setIsLoading(true);
-        fetch('https://qaazii.com/dev/public/api/sign-in', 
-            {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    phone: phone,
-                    country_code: '+91',
-                    password: password,
-                    user_type: 'V',
-                    login_type: 'I'
-                })
-            }
-        )
-        .then(response => response.json())
-        .then(data => {
-            if(data.user.phone.trim().length && data.user.phone.length >= 8) {
-                props.navigation.navigate('Home');
-                setIsLoading(false);
-                // console.log(isLoading)
-            }
-            else {
-                Alert.alert(
-                    'Invalid Input',
-                    'Phone number or password is invalid',
-                    [
-                        {text: 'Try Again'}
-                    ]
-                )
-            }
-            setPhone('');
-            setPassword('');
-            // console.log(data);
-        })
-        .catch(err => {
-            console.log(err);
+        setError(null);
+        try {
+            await dispatch(action);
+            props.navigation.navigate('Home');
+            setIsLoading(false);
+        } catch (err) {
+            setError(err.message)
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if(error) {
             Alert.alert(
-                'Sorry',
-                'Something went wrong!',
+                'An Error Occured!',
+                error,
                 [
                     {text: 'Okay'}
                 ]
             )
+        }
+    }, [error]);
+
+    const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
+        dispatchFormState({
+            type: FORM_INPUT_UPDATE,
+            payload: inputValue,
+            isValid: inputValidity,
+            input: inputIdentifier
         });
-        
+    }, [dispatchFormState]);
+
+    const countryCodeChangeHandler = country => {
+        setCountryCode(country.cca2);
+        setCallingCode(country.callingCode);
     }
 
     return (
@@ -74,17 +106,31 @@ const LoginScreen = props => {
                 <Text style={styles.headerText}>WELCOME BACK</Text>
             </View>
             <View style={styles.formControl}>
+                <View style={styles.container}>
+                    <CountryPicker
+                        withFilter
+                        withCallingCode
+                        countryCode={countryCode}
+                        onSelect={countryCodeChangeHandler}
+                    />
+                    <Input
+                        id='phone'
+                        label='Phone Number'
+                        keyboardType='number-pad'
+                        required
+                        value={formState.inputValues.phone}
+                        onInputChange={inputChangeHandler}
+                        errorText='Phone is required and min 8 digit long'
+                    />
+                </View>
                 <Input
-                    label='Phone Number'
-                    keyboardType='number-pad'
-                    value={phone}
-                    onChange={phoneHandler}
-                />
-                <Input
+                    id='password'
                     label='Password'
-                    onChange={passwordHandler}
-                    value={password}
+                    required
+                    onInputChange={inputChangeHandler}
+                    value={formState.inputValues.password}
                     secure={true}
+                    errorText='Password is required and min 4 digit long'
                 />
                 <View style={styles.button}>
                 {
@@ -134,17 +180,26 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     formControl: {
-        top: -70,
-        maxWidth: 400,
-        maxHeight: 400,
+        flex: 1,
+        top: -80,
+        maxWidth: 300,
+        maxHeight: 300,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: 40
     },
     text: {
         color: Colors.primary
     },
     button: {
-        width: '50%'
+        width: '50%',
+        marginLeft: 30
+    },
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginLeft: -20
     }
 })
  

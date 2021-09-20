@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native';
+import CountryPicker from 'react-native-country-picker-modal';
 
 import CustomButton from '../components/CustomButton';
 import Input from '../components/Input';
@@ -8,8 +9,11 @@ import Colors from '../constants/Colors';
 const RegistrationScreen = props => {
     const [user, setUser] = useState([{}]);
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
+    const [countryCode, setCountryCode] = useState('IN');
+    const [callingCode, setCallingCode] = useState(['+91']);
 
     const emailHandler = text => {
         setEmail(text);
@@ -19,57 +23,109 @@ const RegistrationScreen = props => {
         setPassword(text);
     }
 
-    const usernameHandler = text => {
-        setUsername(text);
+    const nameHandler = text => {
+        setName(text);
+    }
+
+    const phoneHandler = text => {
+        setPhone(+text);
+    }
+
+    const countryCodeChangeHandler = country => {
+        setCountryCode(country.cca2);
+        setCallingCode(country.callingCode);
     }
 
     const userHandler = () => {
-        setUser([{email, password}]);
+        setUser([{email, password, phone, countryCode, callingCode}]);
         if(user.length) {
             props.navigation.navigate('Home');
         }
         setEmail('');
         setPassword('');
-        setUsername('');
+        setName('');
+        setPhone('');
     }
+    
     return (
         <View style={styles.loginForm}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>WELCOME</Text>
             </View>
-            <View style={styles.formControl}>
-                <Input
-                    label='Username'
-                    onChange={usernameHandler}
-                    value={username}
-                />
-                <Input
-                    label='E-mail'
-                    keyboardType='email-address'
-                    onChange={emailHandler}
-                    value={email}
-                />
-                <Input
-                    label='Password'
-                    onChange={passwordHandler}
-                    secure={true}
-                    value={password}
-                />
-                <View style={styles.button}>
-                    <CustomButton label='Sign Up' onPress={userHandler} />
+            <KeyboardAvoidingView style={{ top: -120}}>
+                <View style={styles.card}>
+                    <ScrollView>
+                        <View style={styles.formControl}>
+                            <Input
+                                label='Full Name'
+                                required
+                                onInputChange={nameHandler}
+                                value={name}
+                                errorText='Name is required'
+                                initialValue=''
+                            />
+                        <View style={styles.phoneContainer}>
+                                <CountryPicker
+                                    withFilter
+                                    withCallingCode
+                                    countryCode={countryCode}
+                                    onSelect={countryCodeChangeHandler}
+                                />
+                                <Input
+                                    id='phone'
+                                    label='Phone Number'
+                                    keyboardType='number-pad'
+                                    required
+                                    value={phone}
+                                    onInputChange={phoneHandler}
+                                    errorText='Phone is required and min 8 digit long'
+                                    initialValue=''
+                                />
+                            </View>
+                            <Input
+                                label='E-mail'
+                                keyboardType='email-address'
+                                onInputChange={emailHandler}
+                                autoCapitalization='none'
+                                value={email}
+                                initialValue=''
+                            />
+                            <Input
+                                label='Password'
+                                required
+                                onInputChange={passwordHandler}
+                                secure={true}
+                                value={password}
+                                errorText='Password is required and min 4 digit long'
+                                initialValue=''
+                            />
+                            <View style={styles.button}>
+                                <CustomButton label='Sign Up' onPress={userHandler} />
+                            </View>
+                            <Text>Have an account? <TouchableNativeFeedback onPress={() => props.navigation.navigate('Login')}>
+                                    <Text style={styles.text}>Login</Text>
+                                </TouchableNativeFeedback>
+                            </Text>
+                            
+                        </View> 
+                    </ScrollView>
                 </View>
-                <Text>Have an account? <TouchableNativeFeedback onPress={() => props.navigation.navigate('Login')}>
-                        <Text style={styles.text}>Login</Text>
-                    </TouchableNativeFeedback>
-                </Text>
+            </KeyboardAvoidingView>
             </View>
-        </View>
     );
 }
 
 const styles = StyleSheet.create({
     loginForm: {
-        flex: 1
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    card: {
+        width: '100%',
+        maxWidth: 400,
+        maxHeight: 400,
+        padding: 20,
     },
     header: {
         borderRadius: 150,
@@ -78,8 +134,8 @@ const styles = StyleSheet.create({
         height: 300,
         borderBottomLeftRadius: 300,
         borderBottomRightRadius: 300,
-        left: 50,
-        top: -150,
+        left: 10,
+        top: -170,
         backgroundColor: Colors.primary
     },
     headerText: {
@@ -90,9 +146,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     formControl: {
-        top: -70,
-        maxWidth: 400,
-        maxHeight: 400,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -101,6 +154,12 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '50%'
+    },
+    phoneContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        marginLeft: -20
     }
 })
  
