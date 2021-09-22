@@ -25,9 +25,16 @@ const DrawerWithLogoutButton = props => {
     return (
         <DrawerContentScrollView {...props} contentContainerStyle={styles.scroll}>
             <View style={styles.container}>
-                <Image style={styles.image} source={{uri: user.profile_picture }} />
+                <Image style={styles.image} source={{uri: 
+                    user.profile_picture 
+                    ? user.profile_picture
+                    : 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg'
+                }} />
                 <View style={styles.infoContainer}>
-                    <Text style={styles.title}>{user.first_name}</Text>
+                    <Text style={styles.title}>{user.name}</Text>
+                    <Text style={styles.address}>{user.address}</Text>
+                    <Text style={styles.address}>{user.phone_no}</Text>
+                    <Text style={styles.email}>{user.email}</Text>
                 </View>
             </View>
 
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     container: {
-        height: 200,
+        height: 250,
         backgroundColor: Colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
@@ -150,10 +157,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
         borderColor: Colors.primary,
         borderWidth: 1,
-        marginBottom: 5
+        marginBottom: 10
     },
     infoContainer: {
-        padding: 10,
+        padding: 5,
         width: 250,
         justifyContent: 'center',
         alignItems: 'center'
@@ -161,7 +168,17 @@ const styles = StyleSheet.create({
     title: {
         color: 'white',
         fontSize: 18,
-        marginBottom: 5,
+        marginBottom: 2,
+    },
+    email: {
+        color: 'white',
+        fontSize: 16,
+        marginBottom: 2
+    },
+    address: {
+        color: 'white',
+        fontSize: 16,
+        marginBottom: 2
     },
     buttonContainer: {
         justifyContent: 'center',

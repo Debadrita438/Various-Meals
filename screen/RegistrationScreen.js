@@ -13,7 +13,7 @@ const RegistrationScreen = props => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [countryCode, setCountryCode] = useState('IN');
-    const [callingCode, setCallingCode] = useState(['+91']);
+    const [callingCode, setCallingCode] = useState(['91']);
 
     const emailHandler = text => {
         setEmail(text);
@@ -33,7 +33,7 @@ const RegistrationScreen = props => {
 
     const countryCodeChangeHandler = country => {
         setCountryCode(country.cca2);
-        setCallingCode(country.callingCode);
+        setCallingCode(country.callingCode[0]);
     }
 
     const userHandler = () => {
@@ -54,8 +54,20 @@ const RegistrationScreen = props => {
             </View>
             <KeyboardAvoidingView style={{ top: -120}}>
                 <View style={styles.card}>
-                    <ScrollView>
+                    <ScrollView contentContainerStyle={{flexGrow: 1}}>
                         <View style={styles.formControl}>
+                            <View style={styles.countryPickerContainer}>
+                                <Text style={styles.label}>Select Country Code</Text>
+                                <View style={styles.countryPicker}>
+                                    <CountryPicker
+                                        withFilter
+                                        withCallingCode
+                                        countryCode={countryCode}
+                                        onSelect={countryCodeChangeHandler}
+                                    />
+                                    <Text>+{callingCode}</Text>
+                                </View>
+                            </View>
                             <Input
                                 label='Full Name'
                                 required
@@ -64,31 +76,22 @@ const RegistrationScreen = props => {
                                 errorText='Name is required'
                                 initialValue=''
                             />
-                        <View style={styles.phoneContainer}>
-                                <CountryPicker
-                                    withFilter
-                                    withCallingCode
-                                    countryCode={countryCode}
-                                    onSelect={countryCodeChangeHandler}
-                                />
-                                <Input
-                                    id='phone'
-                                    label='Phone Number'
-                                    keyboardType='number-pad'
-                                    required
-                                    value={phone}
-                                    onInputChange={phoneHandler}
-                                    errorText='Phone is required and min 8 digit long'
-                                    initialValue=''
-                                />
-                            </View>
+                            <Input
+                                id='phone'
+                                label='Phone Number'
+                                keyboardType='number-pad'
+                                required
+                                value={phone}
+                                onInputChange={phoneHandler}
+                                errorText='Phone is required and min 8 digit long'
+                            />
+                            
                             <Input
                                 label='E-mail'
                                 keyboardType='email-address'
                                 onInputChange={emailHandler}
                                 autoCapitalization='none'
                                 value={email}
-                                initialValue=''
                             />
                             <Input
                                 label='Password'
@@ -97,7 +100,6 @@ const RegistrationScreen = props => {
                                 secure={true}
                                 value={password}
                                 errorText='Password is required and min 4 digit long'
-                                initialValue=''
                             />
                             <View style={styles.button}>
                                 <CustomButton label='Sign Up' onPress={userHandler} />
@@ -123,8 +125,8 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        maxWidth: 400,
-        maxHeight: 400,
+        maxWidth: 900,
+        maxHeight: 500,
         padding: 20,
     },
     header: {
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 300,
         borderBottomRightRadius: 300,
         left: 10,
-        top: -170,
+        top: -130,
         backgroundColor: Colors.primary
     },
     headerText: {
@@ -155,11 +157,27 @@ const styles = StyleSheet.create({
     button: {
         width: '50%'
     },
-    phoneContainer: {
+    label: {
+        fontSize: 20
+    },
+    countryPickerContainer: {
+        flex: 0.2,
+        maxWidth: 300,
+        maxHeight: 300,
+        marginLeft: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    countryPicker: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: -20
+        margin: 10,
+        height: 50,
+        width: 100,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc'
     }
 })
  

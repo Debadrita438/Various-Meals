@@ -18,7 +18,7 @@ const inputReducer = (state, action) => {
 
 const Input = props => {
     const [inputState, dispatch] = useReducer(inputReducer, {
-        value: '',
+        value: props.value,
         isValid: false
     });
 
@@ -66,7 +66,7 @@ const Input = props => {
 
 const styles = StyleSheet.create({
     screen: {
-        width: '80%',
+        width: '100%',
         marginBottom: 5
     },
     title: {

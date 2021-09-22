@@ -12,7 +12,7 @@ export const login = (phone, password, callingCode) => {
                 },
                 body: JSON.stringify({
                     phone: phone,
-                    country_code: callingCode,
+                    country_code: '+' + callingCode,
                     password: password,
                     user_type: 'V',
                     login_type: 'I'
