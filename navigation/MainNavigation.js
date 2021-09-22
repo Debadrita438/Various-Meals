@@ -14,6 +14,9 @@ import RegistrationScreen from '../screen/RegistrationScreen';
 import HomeScreen from '../screen/HomeScreen';
 import DetailScreen from '../screen/DetailScreen';
 import CategoryItemDetailScreen from '../screen/CategoryItemDetailScreen';
+import UserListScreen from '../screen/UserListScreen';
+import UserDetailScreen from '../screen/UserDetailScreen';
+import AddUserScreen from '../screen/AddUserScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -73,7 +76,6 @@ const AuthNavigation = () => {
 
 const MenuNavigation = () => {
     return(
-        
             <Drawer.Navigator 
                 initialRouteName='Dashboard' 
                 screenOptions={{
@@ -116,6 +118,19 @@ const MenuNavigation = () => {
                         )
                     }} 
                 />
+                <Drawer.Screen 
+                    name='Users'
+                    component={UserListScreen}
+                    options={{
+                        drawerIcon: () => (
+                            <Ionicons 
+                                name='md-people-outline'
+                                size={23}
+                                color={Colors.primary}
+                            />
+                        )
+                    }}
+                />
             </Drawer.Navigator>
     )
 }
@@ -130,6 +145,16 @@ const MainNavigation = () => {
                     name='CategoryDetails' 
                     component={CategoryItemDetailScreen} 
                     options={CategoryItemDetailScreen.navigationOptions}
+                />
+                <Stack.Screen 
+                    name='UserDetails' 
+                    component={UserDetailScreen}
+                    options={UserDetailScreen.navigationOptions} 
+                />
+                <Stack.Screen 
+                    name='AddUser'
+                    component={AddUserScreen}
+                    options={AddUserScreen.navigationOptions}
                 />
             </Stack.Navigator>
         </NavigationContainer>

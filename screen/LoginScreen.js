@@ -69,7 +69,7 @@ const LoginScreen = props => {
     });
 
     const loginHandler = async () => {
-        if(!formState.inputValues.phone || !formState.inputValues.password) {
+        if(!formState.inputValues) {
             Alert.alert(
                 'Error!',
                 'Phone Number and Password both are required',

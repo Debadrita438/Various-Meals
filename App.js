@@ -10,11 +10,13 @@ import SplashScreen from  "react-native-splash-screen";
 import AuthReducer from './store/reducers/authReducers';
 import CategoryReducer from './store/reducers/categoryReducer';
 import mealReducer from './store/reducers/mealReducer';
+import userReducer from './store/reducers/userReducer';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
   categories: CategoryReducer,
-  meals: mealReducer
+  meals: mealReducer,
+  users: userReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

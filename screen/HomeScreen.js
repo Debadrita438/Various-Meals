@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { SearchBar } from 'react-native-elements';
 import { useSelector } from 'react-redux';
@@ -89,12 +89,5 @@ const HomeScreen = (props) => {
         </React.Fragment>
     );
 };
-
-const styles = StyleSheet.create({
-    searchbar: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
 
 export default HomeScreen;

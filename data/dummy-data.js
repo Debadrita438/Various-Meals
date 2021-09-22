@@ -84,3 +84,27 @@ export const MEALS = [
     imageUrl: 'https://cdn.pixabay.com/photo/2018/04/09/18/26/asparagus-3304997_1280.jpg'
   }
 ];
+
+export const USERS = [
+  {
+    id: 1,
+    name: 'Debadrita Bandyopadhyay',
+    age: 22,
+    imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+    profession: 'Trainee Software Developer'
+  },
+  {
+    id: 2,
+    name: 'Test B',
+    age: 24,
+    imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+    profession: 'App Developer'
+  },
+  {
+    id: 3,
+    name: 'Test C',
+    age: 35,
+    imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+    profession: 'Senior Developer'
+  }
+]
