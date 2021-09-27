@@ -88,7 +88,7 @@ export const MEALS = [
 export const USERS = [
   {
     id: 1,
-    name: 'Debadrita Bandyopadhyay',
+    name: 'Test A',
     age: 22,
     imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
     profession: 'Trainee Software Developer'

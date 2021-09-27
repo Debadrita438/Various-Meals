@@ -9,6 +9,7 @@ const DetailScreen = () => {
   
     const selectFile = () => {
         const options = {
+            mediaType: 'photo',
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
