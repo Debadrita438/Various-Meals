@@ -89,9 +89,8 @@ const LoginScreen = props => {
         setError(null);
         try {
             await dispatch(action);
-            props.navigation.replace('Home');
             dispatchFormState({type: CLEANUP})
-            setIsLoading(false);
+            props.navigation.replace('Tab');
         } catch (err) {
             setError(err.message)
             setIsLoading(false);

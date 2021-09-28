@@ -4,6 +4,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
@@ -17,9 +18,11 @@ import CategoryItemDetailScreen from '../screen/CategoryItemDetailScreen';
 import UserListScreen from '../screen/UserListScreen';
 import UserDetailScreen from '../screen/UserDetailScreen';
 import AddUserScreen from '../screen/AddUserScreen';
+import DummyScreen from '../screen/DummyScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 const DrawerWithLogoutButton = props => {
     const dispatch = useDispatch();
@@ -95,11 +98,11 @@ const MenuNavigation = () => {
                     name='Dashboard' 
                     component={HomeScreen} 
                     options={{
-                        drawerIcon: () => (
+                        drawerIcon: ({focused}) => (
                             <Ionicons
                                 name='md-grid-outline'
                                 size={23}
-                                color={Colors.primary}
+                                color={focused ? Colors.primary : 'black'}
                             />
                         ),
                         drawerActiveTintColor: Colors.primary
@@ -109,11 +112,11 @@ const MenuNavigation = () => {
                     name='Select Image' 
                     component={DetailScreen}
                     options={{
-                        drawerIcon: () => (
+                        drawerIcon: ({focused}) => (
                             <Ionicons 
                                 name='md-images-outline'
                                 size={23}
-                                color={Colors.primary}
+                                color={focused ? Colors.primary : 'black'}
                             />
                         )
                     }} 
@@ -122,11 +125,11 @@ const MenuNavigation = () => {
                     name='Users'
                     component={UserListScreen}
                     options={{
-                        drawerIcon: () => (
+                        drawerIcon: ({focused}) => (
                             <Ionicons 
                                 name='md-people-outline'
                                 size={23}
-                                color={Colors.primary}
+                                color={focused ? Colors.primary : 'black'}
                             />
                         )
                     }}
@@ -135,12 +138,91 @@ const MenuNavigation = () => {
     )
 }
 
+const TabNavigaton = () => {
+    return (
+        <Tab.Navigator screenOptions={{
+            headerShown: false,
+            tabBarActiveBackgroundColor: Colors.primary,
+            tabBarActiveTintColor: 'white',
+            tabBarInactiveTintColor: 'black',
+        }}>
+            <Tab.Screen 
+                name='Home' 
+                component={MenuNavigation} 
+                options={{
+                    tabBarIcon: ({focused}) => (
+                        <Ionicons 
+                            name='md-grid-outline'
+                            size={23}
+                            color={focused ? 'white' : 'black'}                        
+                        />
+                    )
+                }}
+            />
+            <Tab.Screen 
+                name='Select Image' 
+                component={DetailScreen} 
+                options={{
+                    headerShown: 'true',
+                    headerStyle: {
+                        backgroundColor: Colors.primary
+                    },
+                    headerTintColor: 'white',
+                    tabBarIcon: ({focused}) => (
+                        <Ionicons 
+                            name='md-image-outline'
+                            size={23}
+                            color={focused ? 'white' : 'black'}
+                        />
+                    )
+                }}
+            />
+            <Tab.Screen
+                name='Users'
+                component={UserListScreen}
+                options={{
+                    headerShown: 'true',
+                    headerStyle: {
+                        backgroundColor: Colors.primary
+                    },
+                    headerTintColor: 'white',
+                    tabBarIcon: ({focused}) => (
+                        <Ionicons 
+                            name='md-people-outline'
+                            size={23}
+                            color={focused ? 'white' : 'black'}
+                        />
+                    )
+                }}
+            />
+            <Tab.Screen 
+                name='Dummy' 
+                component={DummyScreen} 
+                options={{
+                    headerShown: 'true',
+                    headerStyle: {
+                        backgroundColor: Colors.primary
+                    },
+                    headerTintColor: 'white',
+                    tabBarIcon: ({focused}) => (
+                        <Ionicons 
+                            name='md-code-slash-outline'
+                            size={23}
+                            color={focused ? 'white' : 'black'}
+                        />
+                    )
+                }}
+            />
+        </Tab.Navigator>
+    )
+}
+
 const MainNavigation = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName='Auth' screenOptions={{headerShown: false}}>
                 <Stack.Screen name='Auth' component={AuthNavigation} />
-                <Stack.Screen name='Home' component={MenuNavigation} />
+                <Stack.Screen name='Tab' component={TabNavigaton} />
                 <Stack.Screen
                     name='CategoryDetails' 
                     component={CategoryItemDetailScreen} 
@@ -212,7 +294,7 @@ const styles = StyleSheet.create({
         margin: 10,
         paddingLeft: 20,
         width: 230,
-        top: 240
+        top: 150
     },
     button: {
         alignItems: 'center',

@@ -30,7 +30,6 @@ const App = () => {
     <Provider store={store}>
       <SafeAreaProvider>
         <MainNavigation />
-        {/* <MenuNavigation /> */}
       </SafeAreaProvider>
     </Provider>
   );
