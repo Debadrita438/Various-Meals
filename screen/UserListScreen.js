@@ -1,7 +1,8 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import UserItem from '../components/UserItem';
 import CustomHeaderButton from '../components/CustomHeaderButton';
@@ -9,6 +10,12 @@ import CustomHeaderButton from '../components/CustomHeaderButton';
 const UserListScreen = props => {
     const userList = useSelector(state => state.users.users);
     const { navigation } = props;
+
+    useEffect(() => {
+        AsyncStorage.setItem('users', JSON.stringify(userList)); 
+        
+    }, [userList])
+    
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (

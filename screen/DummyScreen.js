@@ -1,10 +1,34 @@
-import React from "react";
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
 
 const DummyScreen = () => {
+    const [document, setDocument] = useState();
+
+    const pickDocumentHandler = async () => {
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.pdf]
+            })
+            console.log(res)
+            setDocument(res[0].name);
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+
     return(
         <View style={styles.screen}>
-            <Text>Some Dummy text! Contents maybe added soon!</Text>
+            {
+                document 
+                ? (
+                    <Text>FileName: {document}</Text>
+                )
+                : <Button 
+                    title='Pick a Document'
+                    onPress={pickDocumentHandler}
+                /> 
+            }
         </View>
     )
 }

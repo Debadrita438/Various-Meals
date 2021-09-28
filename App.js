@@ -5,7 +5,6 @@ import ReduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import MainNavigation from './navigation/MainNavigation';
-// import MenuNavigation from './navigation/MainNavigation';
 import SplashScreen from  "react-native-splash-screen";
 import AuthReducer from './store/reducers/authReducers';
 import CategoryReducer from './store/reducers/categoryReducer';

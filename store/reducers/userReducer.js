@@ -1,5 +1,5 @@
 import { USERS } from '../../data/dummy-data';
-import { ADD_USER } from '../actions/userActions';
+import { ADD_USER, SET_USERS } from '../actions/userActions';
 
 const initialState = {
     users: USERS
@@ -17,6 +17,10 @@ export default (state = initialState, action) => {
             }
             return {
                 users: state.users.concat(newUser)
+            }
+        case SET_USERS: 
+            return {
+                users: action.payload
             }
         default:
             return state;

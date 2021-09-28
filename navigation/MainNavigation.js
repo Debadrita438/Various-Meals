@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/authActions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import LoginScreen from '../screen/LoginScreen';
 import RegistrationScreen from '../screen/RegistrationScreen';
 import HomeScreen from '../screen/HomeScreen';
@@ -19,6 +20,7 @@ import UserListScreen from '../screen/UserListScreen';
 import UserDetailScreen from '../screen/UserDetailScreen';
 import AddUserScreen from '../screen/AddUserScreen';
 import DummyScreen from '../screen/DummyScreen';
+import StartupScreen from '../screen/StartupScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -134,6 +136,25 @@ const MenuNavigation = () => {
                         )
                     }}
                 />
+                <Drawer.Screen 
+                    name='Dummy' 
+                    component={DummyScreen} 
+                    options={{
+                        headerShown: 'true',
+                        headerTitle: 'Pick A Document',
+                        headerStyle: {
+                            backgroundColor: Colors.primary
+                        },
+                        headerTintColor: 'white',
+                        drawerIcon: ({focused}) => (
+                            <Ionicons 
+                                name='md-code-slash-outline'
+                                size={23}
+                                color={focused ? 'white' : 'black'}
+                            />
+                        )
+                    }}
+                />
             </Drawer.Navigator>
     )
 }
@@ -200,6 +221,7 @@ const TabNavigaton = () => {
                 component={DummyScreen} 
                 options={{
                     headerShown: 'true',
+                    headerTitle: 'Pick A Document',
                     headerStyle: {
                         backgroundColor: Colors.primary
                     },
@@ -220,7 +242,8 @@ const TabNavigaton = () => {
 const MainNavigation = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Auth' screenOptions={{headerShown: false}}>
+            <Stack.Navigator initialRouteName='Startup' screenOptions={{headerShown: false}}>
+                <Stack.Screen name='Startup' component={StartupScreen} />
                 <Stack.Screen name='Auth' component={AuthNavigation} />
                 <Stack.Screen name='Tab' component={TabNavigaton} />
                 <Stack.Screen
