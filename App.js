@@ -10,12 +10,14 @@ import AuthReducer from './store/reducers/authReducers';
 import CategoryReducer from './store/reducers/categoryReducer';
 import mealReducer from './store/reducers/mealReducer';
 import userReducer from './store/reducers/userReducer';
+import editorReducer from './store/reducers/editorReducer';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
   categories: CategoryReducer,
   meals: mealReducer,
-  users: userReducer
+  users: userReducer,
+  text: editorReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

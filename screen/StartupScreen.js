@@ -19,7 +19,7 @@ const StartupScreen = props => {
                 if(userDetails) {
                     const transformedData = JSON.parse(userDetails);
                     await dispatch(authActions.autoLogin(transformedData.user));
-                    props.navigation.navigate('Tab')
+                    props.navigation.replace('Tab')
                 } 
                 else if(!userDetails) {
                     props.navigation.navigate('Auth')

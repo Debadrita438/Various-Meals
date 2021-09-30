@@ -19,8 +19,10 @@ import CategoryItemDetailScreen from '../screen/CategoryItemDetailScreen';
 import UserListScreen from '../screen/UserListScreen';
 import UserDetailScreen from '../screen/UserDetailScreen';
 import AddUserScreen from '../screen/AddUserScreen';
-import DummyScreen from '../screen/DummyScreen';
 import StartupScreen from '../screen/StartupScreen';
+import TextEditorScreen from '../screen/TextEditorScreen';
+import DocumentScreen from '../screen/DocumentScreen';
+import ViewDocumentScreen from '../screen/ViewDocumentScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -137,8 +139,8 @@ const MenuNavigation = () => {
                     }}
                 />
                 <Drawer.Screen 
-                    name='Dummy' 
-                    component={DummyScreen} 
+                    name='Document' 
+                    component={DocumentScreen} 
                     options={{
                         headerShown: 'true',
                         headerTitle: 'Pick A Document',
@@ -148,9 +150,9 @@ const MenuNavigation = () => {
                         headerTintColor: 'white',
                         drawerIcon: ({focused}) => (
                             <Ionicons 
-                                name='md-code-slash-outline'
+                                name='md-document-attach-outline'
                                 size={23}
-                                color={focused ? 'white' : 'black'}
+                                color={focused ? Colors.primary : 'black'}
                             />
                         )
                     }}
@@ -217,8 +219,8 @@ const TabNavigaton = () => {
                 }}
             />
             <Tab.Screen 
-                name='Dummy' 
-                component={DummyScreen} 
+                name='Document' 
+                component={DocumentScreen} 
                 options={{
                     headerShown: 'true',
                     headerTitle: 'Pick A Document',
@@ -228,7 +230,7 @@ const TabNavigaton = () => {
                     headerTintColor: 'white',
                     tabBarIcon: ({focused}) => (
                         <Ionicons 
-                            name='md-code-slash-outline'
+                            name='md-document-attach-outline'
                             size={23}
                             color={focused ? 'white' : 'black'}
                         />
@@ -260,6 +262,30 @@ const MainNavigation = () => {
                     name='AddUser'
                     component={AddUserScreen}
                     options={AddUserScreen.navigationOptions}
+                />
+                <Stack.Screen 
+                    name='TextEditor'
+                    component={TextEditorScreen}
+                    options={{
+                        headerShown: true,
+                        headerTitle: 'Text Editor',
+                        headerStyle: {
+                            backgroundColor: Colors.primary
+                        },
+                        headerTintColor: 'white'
+                    }}
+                />
+                <Stack.Screen 
+                    name='ViewDocument'
+                    component={ViewDocumentScreen}
+                    options={{
+                        headerShown: true,
+                        headerTitle: 'View',
+                        headerStyle: {
+                            backgroundColor: Colors.primary
+                        },
+                        headerTintColor: 'white'
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
