@@ -1,83 +1,104 @@
 import React, { useState } from 'react';
-import { Alert, Image, StyleSheet, View } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import CustomButton from '../components/CustomButton';
 
-const DetailScreen = () => {
-    const [imageUri, setImageUri] = useState();
-  
-    const selectFile = () => {
-        const options = {
-            mediaType: 'photo',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-    
-        };
-  
-        launchImageLibrary(options, (res) => {
-            console.log('Response = ', res);
-            if (res.didCancel) {
-              // console.log('User cancelled image picker');
-            } else if (res.errorMessage) {
-              // console.log('ImagePicker Error: ', res.errorMessage);
-              Alert.alert(
-                'Sorry!',
-                'Something went wrong',
-                [
-                  {text: 'Okay'}
-                ]
-              )
-            } else {
-                // console.log('response', JSON.stringify(res.assets[0].uri));
-                setImageUri(res.assets[0].uri);
-            }
-        }); 
-    };
+const DetailsScreen = () => {
+    const [images, setImages] = useState([]);
+
+    const selectImageHandler = () => {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 200,
+            multiple: true
+        }).then(image => {
+            setImages(prevImgs => [ ...prevImgs, ...image ])
+        }).catch(err => console.log(err.message))
+    } 
+
+    const deleteHandler = path => {
+      setImages(prevImgs =>{
+        return prevImgs.filter(img => img.path !== path)
+      })
+    }
 
     return (
-        <View style={styles.container}>
-          <View style={styles.button}>
-            <CustomButton label='Select Image' onPress={selectFile} />
-          </View>
-            <View style={styles.container}>
-                <Image
-                    source={{ uri: imageUri }}
-                    style={styles.image}
-                />
-            </View>
-          </View>
-    );
+        <View style={styles.screen}>
+                    <View style={styles.container}>
+                        {
+                            images.map((img, index) => (
+                                <ImageBackground 
+                                    key={index}
+                                    style={styles.image}
+                                    source={{ uri: img.path }}
+                                    numColumns={4}
+                                >
+                                  <Ionicons 
+                                    name='md-close'
+                                    size={23}
+                                    color='#8a8a8a'
+                                    onPress={() => deleteHandler(img.path)}
+                                  />
+                                </ImageBackground>
+                            ))
+                        }
+                        <View style={styles.imageView}>
+                          <TouchableOpacity onPress={selectImageHandler} style={styles.button}>
+                            <Ionicons 
+                              name='md-add'
+                              size={50}
+                              style={styles.icon}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                    </View>
+
+          {/* <View style={styles.button}>
+            <CustomButton label='Select Images' onPress={selectImageHandler} />
+          </View> */}
+        </View>
+    )
 }
 
-  
-
 const styles = StyleSheet.create({
+    screen: {
+      marginTop: 10,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    button: {
+      width: '100%',
+      height: '100%',
+    },
     container: {
       flex: 1,
+      flexWrap: 'wrap',
+      flexDirection: 'row',
       padding: 30,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#fff'
-    },
-  
-    button: {
-      width: '50%',
-    },
-  
-    buttonText: {
-      textAlign: 'center',
-      fontSize: 15,
-      color: 'white'
+      alignItems: 'center'
     },
     image: {
-      top: -20,
-      width: 300, 
-      height: 300,
-      borderRadius: 10
-    }
-});
+        flexBasis: '30%',
+        width: 100, 
+        height: 100,
+        borderRadius: 10,
+        margin: 5,
+        alignItems: 'flex-end'
+    },
+    icon: {
+      top: 20,
+      marginLeft: 25
+    },
+    imageView: {
+      width: 100,
+      height: 100,
+      borderRadius: 10,
+      borderStyle: 'dashed',
+      borderWidth: 2,
+      borderColor: '#ccc'
+    },
+  })
 
-export default DetailScreen;
+export default DetailsScreen;
