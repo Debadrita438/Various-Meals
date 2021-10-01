@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import CustomButton from '../components/CustomButton';
+import ImageGrid from '../components/ImageGrid';
 
 const DetailsScreen = () => {
     const [images, setImages] = useState([]);
 
     const selectImageHandler = () => {
         ImagePicker.openPicker({
-            width: 300,
-            height: 200,
-            multiple: true
+            multiple: true,
+            mediaType: 'any'
         }).then(image => {
+            // console.log(image)
             setImages(prevImgs => [ ...prevImgs, ...image ])
         }).catch(err => console.log(err.message))
     } 
@@ -23,42 +22,36 @@ const DetailsScreen = () => {
         return prevImgs.filter(img => img.path !== path)
       })
     }
+    let imageGrid = [];
+    for (const key in images) {
+      if(images[key].mime === 'image/jpeg') {
+        imageGrid.push(
+          <ImageGrid 
+            index={Math.random().toString()}
+            path={images[key].path}
+            onPress={() => deleteHandler(images[key].path)}
+          />
+        )
+      } else {
+        
+      }
+    }
 
     return (
-        <View style={styles.screen}>
-                    <View style={styles.container}>
-                        {
-                            images.map((img, index) => (
-                                <ImageBackground 
-                                    key={index}
-                                    style={styles.image}
-                                    source={{ uri: img.path }}
-                                    numColumns={4}
-                                >
-                                  <Ionicons 
-                                    name='md-close'
-                                    size={23}
-                                    color='#8a8a8a'
-                                    onPress={() => deleteHandler(img.path)}
-                                  />
-                                </ImageBackground>
-                            ))
-                        }
-                        <View style={styles.imageView}>
-                          <TouchableOpacity onPress={selectImageHandler} style={styles.button}>
-                            <Ionicons 
-                              name='md-add'
-                              size={50}
-                              style={styles.icon}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                    </View>
-
-          {/* <View style={styles.button}>
-            <CustomButton label='Select Images' onPress={selectImageHandler} />
-          </View> */}
+      <View style={styles.screen}>
+        <View style={styles.container}>
+          {imageGrid}
+          <View style={styles.imageView}>
+            <TouchableOpacity onPress={selectImageHandler} style={styles.button}>
+              <Ionicons 
+                name='md-add'
+                size={50}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
+      </View>
     )
 }
 
@@ -73,19 +66,9 @@ const styles = StyleSheet.create({
       height: '100%',
     },
     container: {
-      flex: 1,
-      flexWrap: 'wrap',
+      padding: 10,
       flexDirection: 'row',
-      padding: 30,
-      alignItems: 'center'
-    },
-    image: {
-        flexBasis: '30%',
-        width: 100, 
-        height: 100,
-        borderRadius: 10,
-        margin: 5,
-        alignItems: 'flex-end'
+      flexWrap: 'wrap'
     },
     icon: {
       top: 20,
@@ -99,6 +82,6 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderColor: '#ccc'
     },
-  })
+})
 
 export default DetailsScreen;
