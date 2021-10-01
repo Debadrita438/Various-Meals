@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-import Pdf from 'react-native-pdf';
 import HTMLView from 'react-native-htmlview';
 import { useSelector } from "react-redux";
 
@@ -44,7 +43,7 @@ const DocumentScreen = props => {
                         <View style={styles.button}>
                         {
                             !article 
-                            && (
+                            ? (
                                 <View style={styles.button}>
                                     <Button 
                                         title='Go to Text Editor'
@@ -53,7 +52,12 @@ const DocumentScreen = props => {
                                         }}
                                     />
                                 </View>
-                            ) 
+                            ) : (
+                                <View style={styles.textContainer}>
+                                    <Text>Entered Text: </Text>
+                                    <HTMLView value={article} />
+                                </View>
+                            )
                         }
                         </View>
                     </View>
