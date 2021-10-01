@@ -17,14 +17,13 @@ const ViewDocumentScreen = props => {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1,
-        // justifyContent: 'flex-start',
-        // alignItems: 'center'
+        top: 150,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     pdf: {
-        flex: 1,
-        width: 400,
-        height: 600
+        width: 500,
+        height: 500
     }
 })
 

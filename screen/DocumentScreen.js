@@ -54,7 +54,7 @@ const DocumentScreen = props => {
                                 </View>
                             ) : (
                                 <View style={styles.textContainer}>
-                                    <Text>Entered Text: </Text>
+                                    <Text style={{ fontSize: 20 }}>Entered Text: </Text>
                                     <HTMLView value={article} />
                                 </View>
                             )
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         height: 600
     },
     textContainer: {
-        paddingLeft: 10
+        paddingLeft: 10,
     }
 })
 
