@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
@@ -10,15 +10,20 @@ const UserDetailScreen = props => {
     const selectedUser = users.find(user => user.id === userId);
 
     return (
-        <View style={styles.screen}>
+        <ScrollView contentContainerStyle={styles.screen}>
             <Image style={styles.image} source={{uri: selectedUser.imageUrl}} />
             <View style={styles.infoContainer}>
                 <View style={styles.addressContainer}>
                     <Text style={styles.age}>Age: {selectedUser.age}</Text>
                     <Text style={styles.age}>Profession: {selectedUser.profession}</Text>
+                    <Text style={styles.age}>Phone Number: {selectedUser.phoneNo}</Text>
+                    <Text style={styles.age}>Street Address: {selectedUser.streetAddress}</Text>
+                    <Text style={styles.age}>City: {selectedUser.city}</Text>
+                    <Text style={styles.age}>State: {selectedUser.state}</Text>
+                    <Text style={styles.age}>Country: {selectedUser.country}</Text>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 

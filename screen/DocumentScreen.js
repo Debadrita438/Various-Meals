@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, PermissionsAndroid, StyleSheet, Text, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import HTMLView from 'react-native-htmlview';
 import { useSelector } from "react-redux";
+import RNFetchBlob from 'rn-fetch-blob';
 
 const DocumentScreen = props => {
     const [document, setDocument] = useState();
@@ -22,6 +23,39 @@ const DocumentScreen = props => {
             console.log(err.message)
         }
     }
+
+    const downloadHandler = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
+            if(granted === PermissionsAndroid.RESULTS.GRANTED) {
+                actualDownload();
+            } else {
+                Alert.alert(
+                    'Permission Denied!',
+                    'You have to give permissions first to download anything.'
+                )
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
+
+    const actualDownload = () => {
+        const { dirs } = RNFetchBlob.fs;
+        RNFetchBlob.config({
+            fileCache: true,
+            addAndroidDownloads: {
+                useDownloadManager: true,
+                notification: true,
+                title: 'test.pdf',
+                path: `${dirs.DownloadDir}/test.pdf`
+            }
+        }).fetch('GET', 'https://jyotirjagat.files.wordpress.com/2016/01/satyajit-ray-feluda-bombaier-bombete.pdf')
+        .then(res => console.log(res.path))
+        .catch(err => console.log(err.message));
+    }
+
+    const htmlContent = `<p>${article}</p>`
 
     return(
         <View style={styles.screen}>
@@ -53,9 +87,9 @@ const DocumentScreen = props => {
                                     />
                                 </View>
                             ) : (
-                                <View style={styles.textContainer}>
-                                    <Text style={{ fontSize: 20 }}>Entered Text: </Text>
-                                    <HTMLView value={article} />
+                                <View style={styles.htmlViewContainer}>
+                                    <Text style={{ fontSize: 15 }}>Entered Text: </Text>
+                                    <HTMLView value={htmlContent} stylesheet={style} />
                                 </View>
                             )
                         }
@@ -70,6 +104,9 @@ const DocumentScreen = props => {
                                 onPress={pickDocumentHandler}
                             /> 
                         </View>
+                        <View style={styles.button}>
+                            <Button title='Download Now' onPress={downloadHandler} />
+                        </View>
                     </View>
                 )
             }
@@ -82,7 +119,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
     },
     buttonContainer: {
         top: 300
@@ -96,8 +133,29 @@ const styles = StyleSheet.create({
         height: 600
     },
     textContainer: {
-        paddingLeft: 10,
+        paddingLeft: 10
+    },
+    htmlViewContainer: {
+        // flex: 1,
+        elevation: 10,
+        borderRadius: 10,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        height: 100,
+        // width: 150,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // top: 200,
+        // left: 100,
+        overflow: 'hidden'
     }
-})
+});
+
+const style = StyleSheet.create({
+    p: {
+      fontSize: 15,
+      fontWeight: '300'
+    },
+  });
 
 export default DocumentScreen;

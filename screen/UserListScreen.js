@@ -42,6 +42,13 @@ const UserListScreen = props => {
                     age={itemData.item.age}
                     image={itemData.item.imageUrl}
                     profession={itemData.item.profession}
+                    phoneNo={itemData.item.phoneNo}
+                    streetAddress={itemData.item.streetAddress}
+                    city={itemData.item.city}
+                    state={itemData.item.state}
+                    country={itemData.item.country}
+                    lat={itemData.item.lat}
+                    lng={itemData.item.lng}
                     onSelect={() => {
                         navigation.navigate('UserDetails', {
                             userId: itemData.item.id,

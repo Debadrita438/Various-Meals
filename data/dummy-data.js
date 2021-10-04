@@ -91,20 +91,83 @@ export const USERS = [
     name: 'Test A',
     age: 22,
     imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
-    profession: 'Trainee Software Developer'
+    profession: 'Trainee Software Developer',
+    phoneNo: 9876124539,
+    streetAddress: 'Ghosh Para Road',
+    city: 'Bhatpara',
+    state: 'West Bengal',
+    country: 'India',
+    lat: 22.5748,
+    lng: 	88.39825
   },
   {
     id: 2,
     name: 'Test B',
     age: 24,
     imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
-    profession: 'App Developer'
+    profession: 'App Developer',
+    phoneNo: 9736128720,
+    streetAddress: 'Daskhin Para Main Road',
+    city: 'Bansberia',
+    state: 'West Bengal',
+    country: 'India',
+    lat: 22.9665,
+    lng: 88.3893
   },
   {
     id: 3,
     name: 'Test C',
     age: 35,
     imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
-    profession: 'Senior Developer'
+    profession: 'Senior Developer',
+    phoneNo: 9123458769,
+    streetAddress: 'Boro Mitro Bagan',
+    city: 'Chandannagar',
+    state: 'West Bengal',
+    country: 'India',
+    lat: 22.6871,
+    lng: 88.3674
+  },
+  {
+    id: 4,
+    name: 'A',
+    age: 30,
+    imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+    profession: 'Doctor',
+    phoneNo: 9645781203,
+    streetAddress: '613, Grand Trunk Road',
+    city: 'Serampore',
+    state: 'West Bengal',
+    country: 'India',
+    lat: 22.7493,
+    lng: 88.3472
+  },
+  {
+    id: 5,
+    name: 'B',
+    age: 26,
+    imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+    profession: 'Civil Engineer',
+    phoneNo: 9432156987,
+    streetAddress: '68 Jessore Road',
+    city: 'Dum Dum',
+    state: 'West Bengal',
+    country: 'India',
+    lat: 22.6420,
+    lng: 88.4312
+  }, 
+  {
+    id: 6,
+    name: 'C',
+    age: 29,
+    imageUrl: 'https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg',
+    profession: 'Researcher',
+    phoneNo: 9945783612,
+    streetAddress: '21 Bondel Road',
+    city: 'Kolkata',
+    state: 'West Bengal',
+    country: 'India',
+    lat: 22.929,
+    lng: 88.361
   }
 ]
