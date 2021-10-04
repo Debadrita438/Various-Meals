@@ -23,6 +23,7 @@ import StartupScreen from '../screen/StartupScreen';
 import TextEditorScreen from '../screen/TextEditorScreen';
 import DocumentScreen from '../screen/DocumentScreen';
 import ViewDocumentScreen from '../screen/ViewDocumentScreen';
+import MapScreen from '../screen/MapScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -286,6 +287,10 @@ const MainNavigation = () => {
                         },
                         headerTintColor: 'white'
                     }}
+                />
+                <Stack.Screen 
+                    name='MapView'
+                    component={MapScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

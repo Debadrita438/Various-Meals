@@ -3,11 +3,13 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
+import CustomButton from '../components/CustomButton';
 
 const UserDetailScreen = props => {
     const userId = props.route.params.userId
     const users = useSelector(state => state.users.users);
     const selectedUser = users.find(user => user.id === userId);
+    const selectedLocation = {lat: selectedUser.lat, lng: selectedUser.lng};
 
     return (
         <ScrollView contentContainerStyle={styles.screen}>
@@ -21,6 +23,16 @@ const UserDetailScreen = props => {
                     <Text style={styles.age}>City: {selectedUser.city}</Text>
                     <Text style={styles.age}>State: {selectedUser.state}</Text>
                     <Text style={styles.age}>Country: {selectedUser.country}</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <CustomButton 
+                        label='See on Map'
+                        onPress={() => {
+                            props.navigation.navigate('MapView', {
+                                initialLocation: selectedLocation
+                            })
+                        }}
+                    />
                 </View>
             </View>
         </ScrollView>
@@ -61,10 +73,6 @@ const styles = StyleSheet.create({
         maxWidth: 350,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: 'black',
-        shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
         elevation: 5,
         backgroundColor: 'white',
         borderRadius: 10
@@ -76,6 +84,16 @@ const styles = StyleSheet.create({
         color: Colors.primary,
         textAlign: 'center'
     },
+    mapPreview: {
+        width: '100%',
+        maxWidth: 350,
+        height: 300,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10
+    },
+    buttonContainer: {
+        width: '50%'
+    }
 })
 
 export default UserDetailScreen;
