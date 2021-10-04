@@ -1,16 +1,9 @@
 import React from 'react';
-import { Button, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Colors from '../constants/Colors';
 
 const UserItem = props => {
-    const makeCallHandler = () => {
-        let phone = props.phoneNo;
-        let phoneNumber = `tel:${props.phoneNo}`;
-        console.log(phoneNumber);
-        Linking.openURL(phoneNumber)
-    }
-
     return (
         <TouchableOpacity onPress={props.onSelect} style={styles.userItem}>
         <Image style={styles.image} source={{ uri: props.image }} />
@@ -18,12 +11,6 @@ const UserItem = props => {
             <Text style={styles.name}>{props.name}</Text>
             <Text style={styles.profession}>{props.age}</Text>
             <Text style={styles.profession}>{props.profession}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-            <Button 
-                title='Call'
-                onPress={makeCallHandler}
-            />
         </View>
     </TouchableOpacity>
     )
@@ -60,9 +47,6 @@ const styles = StyleSheet.create({
     profession: {
         color: '#666',
         fontSize: 16
-    },
-    buttonContainer: {
-        left: -50
     }
 })
 

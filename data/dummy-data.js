@@ -97,8 +97,8 @@ export const USERS = [
     city: 'Bhatpara',
     state: 'West Bengal',
     country: 'India',
-    lat: 22.5748,
-    lng: 	88.39825
+    // lat: 22.862033,
+    // lng: 	88.384575
   },
   {
     id: 2,
@@ -111,8 +111,8 @@ export const USERS = [
     city: 'Bansberia',
     state: 'West Bengal',
     country: 'India',
-    lat: 22.9665,
-    lng: 88.3893
+    // lat: 22.9665,
+    // lng: 88.3893
   },
   {
     id: 3,
@@ -125,8 +125,8 @@ export const USERS = [
     city: 'Chandannagar',
     state: 'West Bengal',
     country: 'India',
-    lat: 22.6871,
-    lng: 88.3674
+    // lat: 22.6871,
+    // lng: 88.3674
   },
   {
     id: 4,
@@ -139,8 +139,8 @@ export const USERS = [
     city: 'Serampore',
     state: 'West Bengal',
     country: 'India',
-    lat: 22.7493,
-    lng: 88.3472
+    // lat: 22.7493,
+    // lng: 88.3472
   },
   {
     id: 5,
@@ -153,8 +153,8 @@ export const USERS = [
     city: 'Dum Dum',
     state: 'West Bengal',
     country: 'India',
-    lat: 22.6420,
-    lng: 88.4312
+    // lat: 22.6420,
+    // lng: 88.4312
   }, 
   {
     id: 6,
@@ -167,7 +167,7 @@ export const USERS = [
     city: 'Kolkata',
     state: 'West Bengal',
     country: 'India',
-    lat: 22.929,
-    lng: 88.361
+    // lat: 22.929,
+    // lng: 88.361
   }
 ]

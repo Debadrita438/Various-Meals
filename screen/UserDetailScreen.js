@@ -1,15 +1,29 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
-import CustomButton from '../components/CustomButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const UserDetailScreen = props => {
     const userId = props.route.params.userId
     const users = useSelector(state => state.users.users);
     const selectedUser = users.find(user => user.id === userId);
-    const selectedLocation = {lat: selectedUser.lat, lng: selectedUser.lng};
+
+    const makeCallHandler = () => {
+        let phoneNumber = `tel:${selectedUser.phoneNo}`;
+        Linking.openURL(phoneNumber)
+    }
+
+    const mapHandler = () => {
+        const scheme = 'geo: 0,0?q=';
+        // const location = `${selectedUser.lat},${selectedUser.lng}`
+        // const label = 'A'
+        // const url = `${scheme}${location}(${address})`
+        const url = `${scheme}${selectedUser.streetAddress}, +${selectedUser.city}, +${selectedUser.state}`
+
+        Linking.openURL(url)
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.screen}>
@@ -25,14 +39,20 @@ const UserDetailScreen = props => {
                     <Text style={styles.age}>Country: {selectedUser.country}</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <CustomButton 
-                        label='See on Map'
-                        onPress={() => {
-                            props.navigation.navigate('MapView', {
-                                initialLocation: selectedLocation
-                            })
-                        }}
-                    />
+                    <TouchableOpacity style={styles.icon} onPress={makeCallHandler}>
+                        <Ionicons 
+                            name='md-call-outline'
+                            size={23}
+                            color='#2f7831'
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.icon} onPress={mapHandler}>
+                        <Ionicons 
+                            name='md-map-outline'
+                            size={23}
+                            color={Colors.primary}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
@@ -84,15 +104,12 @@ const styles = StyleSheet.create({
         color: Colors.primary,
         textAlign: 'center'
     },
-    mapPreview: {
-        width: '100%',
-        maxWidth: 350,
-        height: 300,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10
-    },
     buttonContainer: {
-        width: '50%'
+        flexDirection: 'row',
+        paddingBottom: 10
+    },
+    icon: {
+        marginHorizontal: 20
     }
 })
 

@@ -4,6 +4,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Video  from 'react-native-video';
 
+import CustomButton from '../components/CustomButton';
+
 const DetailsScreen = () => {
     const [images, setImages] = useState([]);
     const [player, setPlayer] = useState();
@@ -18,6 +20,25 @@ const DetailsScreen = () => {
         }).catch(err => console.log(err.message))
     } 
 
+    const pickImageHandler = () => {
+      ImagePicker.openCamera({
+        cropping: true,
+        mediaType: 'any'
+      }).then(image => {
+        setImages(prevImages => [...prevImages, image])
+      })
+      .catch(err => console.log(err.message))
+    }
+
+    // const pickVideoHandler = () => {
+    //   ImagePicker.openCamera({
+    //     mediaType: 'video'
+    //   }).then(image => {
+    //     setImages(prevImages => [...prevImages, image])
+    //   })
+    //   .catch(err => console.log(err.message))
+    // }
+
     const deleteHandler = path => {
       setImages(prevImgs =>{
         return prevImgs.filter(img => img.path !== path)
@@ -26,6 +47,20 @@ const DetailsScreen = () => {
 
     return (
       <ScrollView contentContainerStyle={styles.screen}>
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            label='Pick From Gallery'
+            onPress={selectImageHandler}
+          />
+          <CustomButton
+            label='Use Camera For Photo'
+            onPress={pickImageHandler}
+          />
+          {/* <CustomButton
+            label='Use Camera For Video'
+            onPress={pickVideoHandler}
+          /> */}
+        </View>
         <View style={styles.container}>
           {
             images.map((img, index) => (
@@ -70,7 +105,7 @@ const DetailsScreen = () => {
               )
             ))
           }
-          <View style={styles.imageView}>
+          {/* <View style={styles.imageView}>
             <TouchableOpacity onPress={selectImageHandler} style={styles.button}>
               <Ionicons 
                 name='md-add'
@@ -78,7 +113,7 @@ const DetailsScreen = () => {
                 style={styles.icon}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     )
@@ -99,7 +134,8 @@ const styles = StyleSheet.create({
       flexWrap: 'wrap',
       flexDirection: 'row',
       padding: 30,
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     icon: {
       top: 20,
@@ -148,6 +184,9 @@ const styles = StyleSheet.create({
       height: 25,
       backgroundColor: 'rgba(0, 0, 0, 0.0)',
       alignItems: 'flex-end' 
+    },
+    buttonContainer: {
+      width: '50%'
     }
 })
 
