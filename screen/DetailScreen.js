@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, ImageBackground, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Video  from 'react-native-video';
@@ -20,7 +20,7 @@ const DetailsScreen = () => {
         }).catch(err => console.log(err.message))
     } 
 
-    const pickImageHandler = () => {
+    const imageHandler = () => {
       ImagePicker.openCamera({
         cropping: true,
         mediaType: 'any'
@@ -30,14 +30,31 @@ const DetailsScreen = () => {
       .catch(err => console.log(err.message))
     }
 
-    // const pickVideoHandler = () => {
-    //   ImagePicker.openCamera({
-    //     mediaType: 'video'
-    //   }).then(image => {
-    //     setImages(prevImages => [...prevImages, image])
-    //   })
-    //   .catch(err => console.log(err.message))
-    // }
+    const videoHandler = () => {
+      ImagePicker.openCamera({
+        mediaType: 'video'
+      }).then(image => {
+        setImages(prevImages => [...prevImages, image])
+      })
+      .catch(err => console.log(err.message))
+    }
+
+    const pickImageHandler = () => {
+      Alert.alert(
+        'Choose',
+        'Please select which one you would like to capture',
+        [
+          {
+            text: 'Photo',
+            onPress: imageHandler
+          },
+          {
+            text: 'Video',
+            onPress: videoHandler
+          }
+        ]
+      )
+    }
 
     const deleteHandler = path => {
       setImages(prevImgs =>{
@@ -53,7 +70,7 @@ const DetailsScreen = () => {
             onPress={selectImageHandler}
           />
           <CustomButton
-            label='Use Camera For Photo'
+            label='Use Camera'
             onPress={pickImageHandler}
           />
           {/* <CustomButton

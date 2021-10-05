@@ -1,43 +1,71 @@
-import React, { useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator, StyleSheet, Text, Image, Dimensions, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 
-import Colors from '../constants/Colors';
+// import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/authActions';
 import * as userActions from '../store/actions/userActions';
 
 
 const StartupScreen = props => {
+    const [visibleFirst, setVisibleFirst] = useState(true);
+    const [visibleSecond, setVisibleSecond] = useState(false);
+    // const [opacity, setOpacity] = useState(new Animated.Value(0));
+
     const dispatch = useDispatch();
 
+    // const onLoad = () => {
+    //     Animated.timing(opacity, {
+    //         toValue: 1,
+    //         duration: 3000
+    //     }).start()
+    // }
+
     useEffect(() => {
-        const tryLogin = async () => {
-            try {
-                const userDetails = await AsyncStorage.getItem('userDetails')
-                const users = await AsyncStorage.getItem('users')
-                if(userDetails) {
-                    const transformedData = JSON.parse(userDetails);
-                    await dispatch(authActions.autoLogin(transformedData.user));
-                    props.navigation.replace('Tab')
-                } 
-                else if(!userDetails) {
-                    props.navigation.navigate('Auth')
+        const tryLogin = () => {
+            setTimeout(() => {
+                setVisibleFirst(false);
+                setVisibleSecond(true)
+            }, 3000);
+            setTimeout(async() => {
+                setVisibleSecond(false);
+                try {
+                    const userDetails = await AsyncStorage.getItem('userDetails')
+                    const users = await AsyncStorage.getItem('users')
+                    if(userDetails) {
+                        const transformedData = JSON.parse(userDetails);
+                        dispatch(authActions.autoLogin(transformedData.user));
+                        props.navigation.replace('Tab')
+                    } 
+                    else if(!userDetails) {
+                        props.navigation.navigate('Auth')
+                    }
+                    if(users) {
+                        const transformedUserList = JSON.parse(users);
+                        dispatch(userActions.setUsers(transformedUserList));
+                    }
+                } catch(err) {
+                    console.log(err.message);
                 }
-                if(users) {
-                    const transformedUserList = JSON.parse(users);
-                    await dispatch(userActions.setUsers(transformedUserList));
-                }
-            } catch(err) {
-                console.log(err.message);
-            }
+            }, 6000)
         }
         tryLogin();
     }, [])
 
     return (
         <View style={styles.screen}>
-            <ActivityIndicator size='large' color={Colors.primary} />
+            {/* <ActivityIndicator size='large' color={Colors.primary} /> */}
+           <Image 
+                fadeDuration={1000}
+                style={styles.image}
+                source={
+                    (
+                        visibleFirst ? require('../assets/icons/icon_splash1.png')
+                        :  require('../assets/icons/icon_splash2.jpg')
+                    )
+                }
+           />
         </View>
     )
 }
@@ -47,6 +75,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    image: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
     }
 })
 

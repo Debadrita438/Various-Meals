@@ -1,5 +1,5 @@
 import React, { useCallback, useReducer } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Colors from '../constants/Colors';
@@ -41,7 +41,12 @@ const AddUserScreen = props => {
             name: '',
             image: '',
             age: '',
-            profession: ''
+            profession: '',
+            phoneNumber: '',
+            streetAddress: '',
+            city: '',
+            state: '',
+            country: ''
         }
     });
 
@@ -59,7 +64,12 @@ const AddUserScreen = props => {
             formState.inputValues.name, 
             formState.inputValues.image,
             formState.inputValues.age,
-            formState.inputValues.profession
+            formState.inputValues.profession,
+            formState.inputValues.phoneNumber,
+            formState.inputValues.streetAddress,
+            formState.inputValues.city,
+            formState.inputValues.state,
+            formState.inputValues.country
         );
         dispatch(action);
         props.navigation.navigate('Users');
@@ -75,7 +85,7 @@ const AddUserScreen = props => {
     }, [dispatchFormState]);
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.formControl}>
                 <Text style={styles.label}>Name</Text>
                 <TextInput
@@ -113,13 +123,59 @@ const AddUserScreen = props => {
                     value={formState.inputValues.profession}
                 />
             </View>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput
+                    style={styles.input}
+                    required
+                    keyboardType='number-pad'
+                    onChangeText={inputChangeHandler.bind(this, 'phoneNumber')}
+                    value={formState.inputValues.phoneNumber}
+                />
+            </View>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>Street Address</Text>
+                <TextInput
+                    style={styles.input}
+                    required
+                    onChangeText={inputChangeHandler.bind(this, 'streetAddress')}
+                    value={formState.inputValues.streetAddress}
+                />
+            </View>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>City</Text>
+                <TextInput
+                    style={styles.input}
+                    required
+                    onChangeText={inputChangeHandler.bind(this, 'city')}
+                    value={formState.inputValues.city}
+                />
+            </View>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>State</Text>
+                <TextInput
+                    style={styles.input}
+                    required
+                    onChangeText={inputChangeHandler.bind(this, 'state')}
+                    value={formState.inputValues.state}
+                />
+            </View>
+            <View style={styles.formControl}>
+                <Text style={styles.label}>Country</Text>
+                <TextInput
+                    style={styles.input}
+                    required
+                    onChangeText={inputChangeHandler.bind(this, 'country')}
+                    value={formState.inputValues.country}
+                />
+            </View>
             <View style={styles.button}>
                 <CustomButton 
                     label='Submit' 
                     onPress={submitHandler} 
                 />    
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -137,18 +193,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    card: {
-        width: '100%',
-        maxWidth: 400,
-        maxHeight: 400,
-        padding: 10
-    },
     container: { 
-        height: 450,
+        // top: 100,
+        // height: 450,
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
-        marginBottom: 5
+        // width: '100%',
+        // marginBottom: 5,
+        flexGrow: 1
     },
     label: {
         fontSize: 20
@@ -162,10 +214,10 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     formControl: {
-        top: -40,
+        // top: -40,
         left: -10,
-        maxWidth: 300,
-        maxHeight: 300,
+        maxWidth: 400,
+        maxHeight: 400,
         marginLeft: 40
     },
     text: {
@@ -173,7 +225,8 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '50%',
-        top: -10
+        top: 10,
+        paddingBottom: 10
     }
 })
 
