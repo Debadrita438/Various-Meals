@@ -11,16 +11,8 @@ import * as userActions from '../store/actions/userActions';
 const StartupScreen = props => {
     const [visibleFirst, setVisibleFirst] = useState(true);
     const [visibleSecond, setVisibleSecond] = useState(false);
-    // const [opacity, setOpacity] = useState(new Animated.Value(0));
 
     const dispatch = useDispatch();
-
-    // const onLoad = () => {
-    //     Animated.timing(opacity, {
-    //         toValue: 1,
-    //         duration: 3000
-    //     }).start()
-    // }
 
     useEffect(() => {
         const tryLogin = () => {
