@@ -13,7 +13,12 @@ export default (state = initialState, action) => {
                 name: action.userData.name,
                 age: action.userData.age,
                 imageUrl: action.userData.image,
-                profession: action.userData.profession
+                profession: action.userData.profession,
+                phoneNo: action.userData.phoneNo,
+                streetAddress: action.userData.streetAddress,
+                city: action.userData.city,
+                state: action.userData.state,
+                country: action.userData.country
             }
             return {
                 users: state.users.concat(newUser)

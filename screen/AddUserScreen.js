@@ -1,6 +1,8 @@
-import React, { useCallback, useReducer } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import Modal from 'react-native-modal';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Colors from '../constants/Colors';
 import CustomButton from '../components/CustomButton';
@@ -25,7 +27,12 @@ const formReducer = (state, action) => {
                     name: '',
                     image: '',
                     age: '',
-                    profession: ''
+                    profession: '',
+                    phoneNo: '',
+                    streetAddress: '',
+                    city: '',
+                    state: '',
+                    country: ''
                 }
             }
         default: 
@@ -35,6 +42,7 @@ const formReducer = (state, action) => {
 
 const AddUserScreen = props => {
     const dispatch = useDispatch();
+    const [modalVisibility, setModalVisibility] = useState(false);
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
@@ -42,7 +50,7 @@ const AddUserScreen = props => {
             image: '',
             age: '',
             profession: '',
-            phoneNumber: '',
+            phoneNo: '',
             streetAddress: '',
             city: '',
             state: '',
@@ -65,15 +73,20 @@ const AddUserScreen = props => {
             formState.inputValues.image,
             formState.inputValues.age,
             formState.inputValues.profession,
-            formState.inputValues.phoneNumber,
+            formState.inputValues.phoneNo,
             formState.inputValues.streetAddress,
             formState.inputValues.city,
             formState.inputValues.state,
             formState.inputValues.country
         );
         dispatch(action);
-        props.navigation.navigate('Users');
         dispatchFormState({type: CLEANUP});
+        setModalVisibility(true);
+    }
+
+    const modalButtonHandler = () => {
+        setModalVisibility(false);
+        props.navigation.navigate('Users');
     }
 
     const inputChangeHandler = useCallback((inputIdentifier, inputValue) => {
@@ -86,6 +99,25 @@ const AddUserScreen = props => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <Modal isVisible={modalVisibility}>
+                <View style={styles.modalView}>
+                    <View style={styles.icon}>
+                        <Ionicons 
+                            name='md-person-add'
+                            size={80}
+                            color={Colors.primary}
+                        />
+                    </View>
+                    <View style={styles.modalTextContainer}>
+                        <Text style={styles.modalText}>
+                            User have been added Successfully!
+                        </Text>
+                    </View>
+                    <View style={styles.modalButton}>
+                        <CustomButton label='Okay' onPress={modalButtonHandler} />
+                    </View>
+                </View>
+            </Modal>
             <View style={styles.formControl}>
                 <Text style={styles.label}>Name</Text>
                 <TextInput
@@ -129,8 +161,8 @@ const AddUserScreen = props => {
                     style={styles.input}
                     required
                     keyboardType='number-pad'
-                    onChangeText={inputChangeHandler.bind(this, 'phoneNumber')}
-                    value={formState.inputValues.phoneNumber}
+                    onChangeText={inputChangeHandler.bind(this, 'phoneNo')}
+                    value={formState.inputValues.phoneNo}
                 />
             </View>
             <View style={styles.formControl}>
@@ -227,6 +259,32 @@ const styles = StyleSheet.create({
         width: '50%',
         top: 10,
         paddingBottom: 10
+    },
+    modalView: {
+        left: '10%',
+        width: 300,
+        height: 300,
+        elevation: 5,
+        backgroundColor: 'white',
+        borderRadius: 10,
+    },
+    icon: {
+        top: 40,
+        alignItems: 'center'
+    },
+    modalTextContainer: {
+        paddingTop: 60
+    },
+    modalText: {
+        fontSize: 20, 
+        textAlign: 'center', 
+        fontWeight: '600', 
+        fontStyle: 'italic'
+    },
+    modalButton: {
+        width: '65%',
+        left: '18%',
+        paddingTop: 20
     }
 })
 
