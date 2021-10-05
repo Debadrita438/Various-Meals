@@ -1,8 +1,9 @@
 import { USERS } from '../../data/dummy-data';
-import { ADD_USER, SET_USERS } from '../actions/userActions';
+import { ADD_USER, DELETE_USER, SET_USERS, SHOW_USER } from '../actions/userActions';
 
 const initialState = {
-    users: USERS
+    users: USERS,
+    user: []
 }
 
 export default (state = initialState, action) => {
@@ -21,12 +22,27 @@ export default (state = initialState, action) => {
                 country: action.userData.country
             }
             return {
+                ...state,
                 users: state.users.concat(newUser)
             }
         case SET_USERS: 
             return {
+                ...state,
                 users: action.payload
             }
+        case SHOW_USER: {
+            return {
+                ...state,
+                user: state.user.concat(action.payload)
+            }
+        }
+        case DELETE_USER: {
+            const updatedUserList = state.user.filter(user => user.id !== action.payload)
+            return {
+                ...state,
+                user: updatedUserList
+            }
+        }
         default:
             return state;
     }

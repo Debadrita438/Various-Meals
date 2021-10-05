@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { useDispatch } from 'react-redux';
 
 import Colors from '../constants/Colors';
+import * as userActions from '../store/actions/userActions';
 
 const UserItem = props => {
+    const [checked, setChecked] = useState(true);
+    const dispatch = useDispatch();
+
     return (
         <TouchableOpacity onPress={props.onSelect} style={styles.userItem}>
         <Image style={styles.image} source={{ uri: props.image }} />
@@ -11,6 +17,21 @@ const UserItem = props => {
             <Text style={styles.name}>{props.name}</Text>
             <Text style={styles.profession}>{props.age}</Text>
             <Text style={styles.profession}>{props.profession}</Text>
+        </View>
+        <View style={styles.checkBox}>
+            <BouncyCheckbox 
+                size={25}
+                fillColor={Colors.primary}
+                iconStyle={{ borderRadius: 7 }}
+                onPress={() => {
+                    setChecked(!checked);
+                    if(checked) {
+                        dispatch(userActions.showUser(props.id, props.name, props.image))
+                    } else {
+                        dispatch(userActions.deleteUser(props.id))
+                    }
+                }}
+            />
         </View>
     </TouchableOpacity>
     )
@@ -47,6 +68,9 @@ const styles = StyleSheet.create({
     profession: {
         color: '#666',
         fontSize: 16
+    },
+    checkBox: {
+        left: -30
     }
 })
 
